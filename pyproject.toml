@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "llm-learn"
+version = "0.1.0"
+description = ""
+authors = ["Haohanblue <1147378768@qq.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+python-dotenv = "^1.0.1"
+requests = "^2.32.3"
+zhipuai = "^2.1.2"
+openai = "^1.35.10"
+akshare = "^1.14.25"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
