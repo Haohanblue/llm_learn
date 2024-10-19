@@ -16,8 +16,8 @@ vectordb = Chroma(
     embedding_function=embedding
 )
 print(f"向量库中存储的数量：{vectordb._collection.count()}")
-
-
+from langchain.memory import ConversationBufferMemory
+from langchain.chains import ConversationalRetrievalChain
 from zhipuai_llm import ZhipuAILLM
 
 # 获取环境变量 API_KEY
@@ -30,28 +30,13 @@ template = """使用以下上下文来回答最后的问题。如果你不知道
 {context}
 问题: {question}
 """
-
 QA_CHAIN_PROMPT = PromptTemplate(input_variables=["context","question"],
                                  template=template)
-
-from langchain.chains import RetrievalQA
-
-qa_chain = RetrievalQA.from_chain_type(llm,
-                                       retriever=vectordb.as_retriever(),
-                                       return_source_documents=True,
-                                       chain_type_kwargs={"prompt":QA_CHAIN_PROMPT})
-
-
-from langchain.memory import ConversationBufferMemory
-
 memory = ConversationBufferMemory(
     memory_key="chat_history",  # 与 prompt 的输入变量保持一致。
     return_messages=True  # 将以消息列表的形式返回聊天记录，而不是单个字符串
 )
-from langchain.chains import ConversationalRetrievalChain
-
 retriever=vectordb.as_retriever()
-
 qa = ConversationalRetrievalChain.from_llm(
     llm,
     retriever=retriever,
